@@ -7,7 +7,7 @@ var canvas = document.getElementById('canvas')
 var context = canvas.getContext('2d')//获取二次元的上下文
 var lineWidth = 5//线的宽度
 
-autoSetCanvasSize(canvas);//还会自动监听window的变化
+autoSetCanvasSize(canvas)//还会自动监听window的变化
 
 listenToUser(canvas)
 
@@ -15,7 +15,9 @@ listenToUser(canvas)
 var eraserEnabled = false//是否在使用eraser
 //点击画笔和橡皮擦的时候颜色响应的变化
 pen.onclick = function(){
-    var eraserEnabled = false
+    //之前在eraserEnabled前面加了一个var 
+    //导致变量提升，里面的变量变成undefined，覆盖外面的变量
+    eraserEnabled = false
     pen.classList.add('active')
     eraser.classList.remove('active')
 }
@@ -23,6 +25,33 @@ eraser.onclick = function(){
     eraserEnabled = true
     eraser.classList.add('active')
     pen.classList.remove('active')
+}
+red.onclick = function(){
+    context.fillStyle = 'red'
+    context.strokeStyle = 'red'
+    red.classList.add('active')
+    green.classList.remove('active')
+    blue.classList.remove('active')
+}
+green.onclick = function(){
+    context.fillStyle = 'green'
+    context.strokeStyle = 'green'
+    red.classList.remove('active')
+    green.classList.add('active')
+    blue.classList.remove('active')
+}
+blue.onclick = function(){
+    context.fillStyle = 'blue'
+    context.strokeStyle = 'blue'
+    red.classList.remove('active')
+    green.classList.remove('active')
+    blue.classList.add('active')
+}
+thin.onclick = function(){
+    lineWidth = 5
+}
+thick.onclick = function(){
+    lineWidth = 10
 }
 clear.onclick = function(){
     context.clearRect(0,0,canvas.width,canvas.height)
@@ -128,7 +157,7 @@ function listenToUser(canvas){
             }
         }    
 
-        canvas.onmouseup = function(aaa){
+        canvas.onmouseup = function(){
             // console.log('up')
             using = false
         }
@@ -142,38 +171,9 @@ function listenToUser(canvas){
 
 
 
-/******第三部分：控制橡皮擦是否开启*****/
 
-//用一个变量表示有没有在用橡皮擦
 
-red.onclick = function(){
-    context.fillStyle = 'red'
-    context.strokeStyle = 'red'
-    //红色被点击，兄弟没有active
-    red.classList.add('active')
-    green.classList.remove('active')
-    blue.classList.remove('active')
-}
-green.onclick = function(){
-    context.fillStyle = 'green'
-    context.strokeStyle = 'green'
-    red.classList.remove('active')
-    green.classList.add('active')
-    blue.classList.remove('active')
-}
-blue.onclick = function(){
-    context.fillStyle = 'blue'
-    context.strokeStyle = 'blue'
-    red.classList.remove('active')
-    green.classList.remove('active')
-    blue.classList.add('active')
-}
-thin.onclick = function(){
-    lineWidth = 5
-}
-thick.onclick = function(){
-    lineWidth = 10
-}
+
 
 /*************************/
 function autoSetCanvasSize(canvas){
